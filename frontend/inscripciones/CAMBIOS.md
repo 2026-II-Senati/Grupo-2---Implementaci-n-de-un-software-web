@@ -1,0 +1,8 @@
+# Registro de cambios: frontend de inscripciones
+
+Responsable: Diógenes Román
+
+- Paso 1: configuración del proyecto (Vite + React + Tailwind), index.html, logo y QR de Yape en public/img.
+- Paso 2: datos del concurso (config), validaciones (utils) y llamadas a la API (services).
+- Paso 3: componentes React (comunes, formulario de delegación, alumno libre y panel del organizador).
+- Paso 4: aplicación principal (App.jsx), punto de entrada (main.jsx) y tema de Tailwind (index.css).
