@@ -336,6 +336,7 @@ $("sendL").onclick=async()=>{
   const m=(t,c)=>{const e=$("msgL");e.className="msg "+c;e.textContent=t};
   let bad=false;
   bad=mark($("ldni"),!/^\d{8}$/.test($("ldni").value))||bad;
+  bad=mark($("lcel"),!/^9\d{8}$/.test($("lcel").value))||bad;
   bad=mark($("lgrado"),!$("lgrado").value)||bad;
   bad=mark($("lnom"),!$("lnom").value.trim())||bad;
   bad=mark($("plOp"),!opsOk($("plOp").value))||bad;
