@@ -4,3 +4,4 @@ Responsable: Diógenes Román
 
 - Paso 1: configuración del proyecto (Vite + React + Tailwind), index.html, logo y QR de Yape en public/img.
 - Paso 2: datos del concurso (config), validaciones (utils) y llamadas a la API (services).
+- Paso 3: componentes React (comunes, formulario de delegación, alumno libre y panel del organizador).
