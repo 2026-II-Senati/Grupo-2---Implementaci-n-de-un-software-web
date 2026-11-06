@@ -29,12 +29,36 @@ app.get('/healthz', async (_req, res) => {
 app.use('/api', inscripcionRoutes);
 app.use('/api/admin', adminRoutes);
 
-app.use(express.static(path.join(__dirname, '..', 'public'), {
+/*
+ * Frontend de Inscripciones
+ * Sirve la aplicación React compilada desde frontend/inscripciones/dist
+ */
+const frontendPath = path.join(
+  __dirname,
+  '..',
+  '..',
+  'frontend',
+  'inscripciones',
+  'dist'
+);
+
+app.use(express.static(frontendPath, {
   maxAge: '1h'
 }));
 
+/*
+ * Las rutas API inexistentes deben responder JSON
+ * y no devolver el index.html de React.
+ */
 app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'No encontrado' });
+});
+
+/*
+ * Para cualquier ruta del frontend se devuelve React.
+ */
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 app.use((err, _req, res, _next) => {
