@@ -1,1272 +1,237 @@
-\# Plataforma Web para la Gestión de Inscripciones y Publicación de Resultados
+# Plataforma Web Tarpuy — Inscripciones y Resultados
 
+Proyecto académico del Grupo 2 del curso **Fullstack Developer Software** de **SENATI**, carrera de Ingeniería de Software con Inteligencia Artificial. Plataforma para gestionar inscripciones y publicar resultados del **XI Concurso Nacional de Matemática Lima Este 2026 — Olimpiada Tarpuyana**.
 
+## Estado del proyecto
 
-Proyecto final del curso \*\*Fullstack Developer Software\*\* de la carrera de \*\*Ingeniería de Software con Inteligencia Artificial – SENATI\*\*.
+La rama `main` contiene los módulos integrados de **inscripciones**, **resultados** y **base de datos PostgreSQL**. Se comprobó localmente el flujo de inscripción de un alumno libre, verificación de pago, consulta administrativa, registro de puntaje, publicación y visualización del orden de mérito. Las pruebas no equivalen a una validación completa de todos los formularios o del despliegue en producción.
 
+## Tecnologías
 
+| Capa | Tecnologías |
+| --- | --- |
+| Frontend | React, Vite, Tailwind CSS, JavaScript |
+| Backend | Node.js, Express, API REST |
+| Base de datos | PostgreSQL y controlador `pg` |
+| Colaboración | Git, GitHub y Pull Requests |
 
-La plataforma fue desarrollada para apoyar la gestión del \*\*XI Concurso Nacional de Matemática Lima Este 2026 – Olimpiada Tarpuyana\*\*, organizado por la IEP Colegio Tarpuy Moderno.
+Los dos sistemas comparten datos de participantes en PostgreSQL. El backend de inscripciones registra las fichas, asesores y alumnos; el backend de resultados consulta esos participantes y gestiona los puntajes y la publicación.
 
-
-
-\---
-
-
-
-\## Descripción del proyecto
-
-
-
-El sistema permite digitalizar dos procesos principales del concurso:
-
-
-
-1\. \*\*Registro de participantes\*\*
-
-2\. \*\*Publicación y administración de resultados\*\*
-
-
-
-La solución busca reducir el trabajo manual relacionado con inscripciones, verificación de pagos, registro de participantes y publicación de resultados.
-
-
-
-El proyecto está compuesto por dos aplicaciones web que trabajan sobre una base de datos relacional PostgreSQL.
-
-
-
-\---
-
-
-
-\## Sistemas incluidos
-
-
-
-\### Sistema de Inscripciones
-
-
-
-Permite registrar participantes mediante dos modalidades:
-
-
-
-\- Delegación de una institución educativa.
-
-\- Alumno libre.
-
-
-
-Principales funciones:
-
-
-
-\- Registro de institución educativa.
-
-\- Registro de asesores por nivel.
-
-\- Registro de estudiantes por grado.
-
-\- Máximo de 10 estudiantes por grado.
-
-\- Validación de DNI.
-
-\- Control de duplicidad de participantes.
-
-\- Cálculo automático del monto de inscripción.
-
-\- Registro del medio y número de operación.
-
-\- Registro de alumno libre.
-
-\- Panel administrativo.
-
-\- Verificación de pagos.
-
-\- Exportación de inscritos a Excel.
-
-
-
-\---
-
-
-
-\### Sistema de Resultados
-
-
-
-Permite administrar y publicar los resultados del concurso.
-
-
-
-Principales funciones:
-
-
-
-\- Búsqueda de participantes.
-
-\- Registro individual de puntajes.
-
-\- Registro de hora de entrega.
-
-\- Registro de puntajes en lote.
-
-\- Importación de resultados.
-
-\- Incorporación de participantes de último momento.
-
-\- Cálculo del orden de mérito.
-
-\- Ranking por instituciones.
-
-\- Control de publicación de resultados.
-
-\- Consulta pública de resultados.
-
-
-
-\---
-
-
-
-\## Arquitectura general
-
-
-
-La plataforma utiliza una arquitectura cliente-servidor.
-
-
+## Estructura actual del repositorio
 
 ```text
-
-┌──────────────────────────────┐
-
-│          FRONTEND            │
-
-│                              │
-
-│ HTML + CSS + JavaScript      │
-
-│ Fetch API                    │
-
-└──────────────┬───────────────┘
-
-&#x20;              │
-
-&#x20;              │ HTTP / JSON
-
-&#x20;              ▼
-
-┌──────────────────────────────┐
-
-│           BACKEND            │
-
-│                              │
-
-│ Node.js + Express            │
-
-│ API REST                     │
-
-│ Validaciones                 │
-
-│ Autenticación                │
-
-└──────────────┬───────────────┘
-
-&#x20;              │
-
-&#x20;              │ SQL
-
-&#x20;              ▼
-
-┌──────────────────────────────┐
-
-│       BASE DE DATOS          │
-
-│                              │
-
-│ PostgreSQL                   │
-
-└──────────────────────────────┘
-
-```
-
-
-
-\---
-
-
-
-\## Tecnologías utilizadas
-
-
-
-\### Frontend
-
-
-
-\- HTML5
-
-\- CSS3
-
-\- JavaScript ES6+
-
-\- Fetch API
-
-\- Diseño responsive
-
-
-
-\### Backend
-
-
-
-\- Node.js
-
-\- Express.js
-
-
-
-\### Base de datos
-
-
-
-\- PostgreSQL
-
-
-
-\### Librerías principales
-
-
-
-\- `pg`
-
-\- `express`
-
-\- `express-rate-limit`
-
-\- `exceljs`
-
-\- `@neondatabase/serverless`
-
-
-
-\### Herramientas de desarrollo
-
-
-
-\- Git
-
-\- GitHub
-
-\- WebStorm / Visual Studio Code
-
-\- PostgreSQL
-
-\- npm
-
-
-
-\### Despliegue
-
-
-
-\- Docker
-
-\- Fly.io
-
-
-
-\---
-
-
-
-\## Estructura del repositorio
-
-
-
-```text
-
 Grupo-2---Implementaci-n-de-un-software-web/
-
-│
-
-├── concurso-tarpuy-main/
-
-│   │
-
-│   ├── public/
-
-│   ├── server.js
-
-│   ├── package.json
-
-│   ├── Dockerfile
-
-│   └── fly.toml
-
-│
-
-├── Resultados-ConcursoMat2026-main/
-
-│   │
-
-│   ├── public/
-
-│   ├── sql/
-
-│   ├── server.js
-
-│   ├── package.json
-
-│   ├── Dockerfile
-
-│   └── fly.toml
-
-│
-
+├── backend/
+│   └── resultados/                  # API de resultados (Node.js + PostgreSQL)
+├── concurso-tarpuy-main/            # API ACTUAL de inscripciones
+├── frontend/
+│   ├── inscripciones/               # React + Tailwind (puerto 5173 en desarrollo)
+│   └── resultados/                  # React + Tailwind (puerto 5174 en desarrollo)
+├── database/
+│   ├── scripts/
+│   │   ├── 01_inscripciones.sql
+│   │   ├── 02_resultados.sql
+│   │   ├── 03_roles.sql
+│   │   └── 04_datos_prueba.sql
+│   └── docker/
+├── legacy/
+│   └── Resultados-ConcursoMat2026-main/
+│                                     # Implementación anterior, conservada como referencia
 ├── .gitignore
-
 └── README.md
-
 ```
 
+> **Importante:** aunque se llame `concurso-tarpuy-main/`, esa carpeta contiene el **backend actual** de inscripciones y no debe considerarse obsoleta. La implementación anterior de resultados se encuentra en `legacy/`; **no debe usarse para arrancar la versión actual**. Sus archivos `Dockerfile` y `fly.toml` son históricos. Antes de modificar despliegues existentes, revisar su configuración en el proveedor correspondiente.
 
+## Funcionalidades
 
-\---
+### Inscripciones
 
+- Inscripción de alumnos libres y por delegaciones de instituciones educativas.
+- Datos de instituciones, asesores y participantes.
+- Validaciones de datos y control de duplicados.
+- Registro del medio y número de operación de pago.
+- Panel organizador para consultar inscripciones y verificar pagos.
+- Exportación administrativa de participantes, según las funciones del módulo.
 
+### Resultados
 
-\## Flujo general del sistema
+- Búsqueda de participantes inscritos.
+- Registro de puntajes y hora de entrega.
+- Carga por grado e importación administrativa.
+- Cálculo de orden de mérito y ranking de instituciones.
+- Activación o desactivación de la publicación de resultados.
+- Consulta pública de resultados.
 
+## Requisitos locales
 
+- Git.
+- **Node.js 20.19 o posterior** (requerido por los frontends con Vite 8).
+- npm.
+- PostgreSQL.
+- WebStorm, VS Code u otro editor.
 
-\### Inscripción por delegación
+Verificar herramientas:
 
-
-
-```text
-
-Institución educativa
-
-&#x20;       ↓
-
-Datos de la I.E.
-
-&#x20;       ↓
-
-Registro de asesores
-
-&#x20;       ↓
-
-Registro de alumnos
-
-&#x20;       ↓
-
-Validación de datos
-
-&#x20;       ↓
-
-Registro de pago
-
-&#x20;       ↓
-
-Confirmación de inscripción
-
-```
-
-
-
-\### Publicación de resultados
-
-
-
-```text
-
-Participantes inscritos
-
-&#x20;       ↓
-
-Registro de puntajes
-
-&#x20;       ↓
-
-Validación
-
-&#x20;       ↓
-
-Cálculo de resultados
-
-&#x20;       ↓
-
-Orden de mérito
-
-&#x20;       ↓
-
-Publicación
-
-&#x20;       ↓
-
-Consulta pública
-
-```
-
-
-
-\---
-
-
-
-\# Instalación local
-
-
-
-\## Requisitos
-
-
-
-Antes de ejecutar el proyecto se necesita tener instalado:
-
-
-
-\- Node.js
-
-\- npm
-
-\- PostgreSQL
-
-\- Git
-
-
-
-Verificar Node.js:
-
-
-
-```bash
-
+```powershell
 node -v
-
-```
-
-
-
-Verificar npm:
-
-
-
-```bash
-
 npm -v
-
+git --version
 ```
 
+## Preparación de PostgreSQL
 
+Crear una base de datos, por ejemplo `tarpuy_local`. Desde la raíz del repositorio, ejecutar en este orden los scripts utilizando `psql` y un usuario autorizado:
 
-\---
-
-
-
-\## Clonar el repositorio
-
-
-
-```bash
-
-git clone https://github.com/2026-II-Senati/Grupo-2---Implementaci-n-de-un-software-web.git
-
+```powershell
+psql -U postgres -d tarpuy_local -f "database/scripts/01_inscripciones.sql"
+psql -U postgres -d tarpuy_local -f "database/scripts/02_resultados.sql"
 ```
 
+El archivo `03_roles.sql` configura roles con permisos específicos y requiere revisión de credenciales antes de utilizarse. `04_datos_prueba.sql` contiene datos ficticios para pruebas y **no debe ejecutarse en una base con datos reales**.
 
+> Si `psql` no está agregado al `PATH` de Windows, utilizar la ruta completa de `psql.exe` instalada con PostgreSQL.
 
-Entrar al proyecto:
+## Backend de inscripciones
 
+Carpeta: `concurso-tarpuy-main/`.
 
-
-```bash
-
-cd Grupo-2---Implementaci-n-de-un-software-web
-
-```
-
-
-
-\---
-
-
-
-\# Base de datos local
-
-
-
-Crear una base de datos PostgreSQL:
-
-
-
-```sql
-
-CREATE DATABASE tarpuy\_local;
-
-```
-
-
-
-Ejemplo de conexión:
-
-
-
-```text
-
-postgresql://postgres:TU\_CLAVE@localhost:5432/tarpuy\_local
-
-```
-
-
-
-> Las contraseñas y secretos no deben almacenarse directamente en GitHub.
-
-
-
-\---
-
-
-
-\# Ejecutar el Sistema de Inscripciones
-
-
-
-Entrar a la carpeta:
-
-
-
-```bash
-
+```powershell
 cd concurso-tarpuy-main
-
-```
-
-
-
-Instalar dependencias:
-
-
-
-```bash
-
 npm install
-
 ```
 
+Crear un archivo local `.env` **sin subirlo a GitHub**:
 
-
-Crear un archivo:
-
-
-
-```text
-
-.env
-
+```dotenv
+DATABASE_URL=postgresql://postgres:TU_CLAVE@localhost:5432/tarpuy_local
+ADMIN_PASSWORD=CAMBIAR_POR_UNA_CLAVE_SEGURA
+SESSION_SECRET=CAMBIAR_POR_UN_SECRETO_LARGO_Y_ALEATORIO
+PORT=8080
 ```
 
+Iniciar:
 
-
-Ejemplo:
-
-
-
-```env
-
-DATABASE\_URL=postgresql://postgres:TU\_CLAVE@localhost:5432/tarpuy\_local
-
-ADMIN\_PASSWORD=admin123
-
-SESSION\_SECRET=clave\_segura\_para\_desarrollo\_local
-
-```
-
-
-
-Ejecutar:
-
-
-
-```bash
-
+```powershell
 node --env-file=.env server.js
-
 ```
 
+Comprobación de salud: `http://localhost:8080/healthz`.
 
+## Frontend de inscripciones
 
-El sistema estará disponible en:
+Desde la raíz del repositorio:
 
-
-
-```text
-
-http://localhost:8080
-
-```
-
-
-
-\---
-
-
-
-\# Ejecutar el Sistema de Resultados
-
-
-
-Abrir otra terminal y entrar a:
-
-
-
-```bash
-
-cd Resultados-ConcursoMat2026-main
-
-```
-
-
-
-Instalar dependencias:
-
-
-
-```bash
-
+```powershell
+cd frontend/inscripciones
 npm install
-
+npm run dev
 ```
 
+Interfaz local: `http://localhost:5173/`. Vite redirige las solicitudes `/api` al backend de inscripciones en el puerto **8080**.
 
+## Backend de resultados
 
-Crear:
+Desde la raíz del repositorio:
 
+```powershell
+cd backend/resultados
+npm install
+```
 
+Crear un archivo local `.env` **sin subirlo a GitHub**:
+
+```dotenv
+DATABASE_URL=postgresql://postgres:TU_CLAVE@localhost:5432/tarpuy_local
+ADMIN_PASSWORD=CAMBIAR_POR_UNA_CLAVE_SEGURA
+PORT=3000
+```
+
+En desarrollo puede usarse una conexión `DATABASE_URL` común. Para producción se recomienda separar accesos mediante `DATABASE_URL_LECTOR` y `DATABASE_URL_ADMIN`, con roles de privilegios mínimos.
+
+Iniciar:
+
+```powershell
+npm run dev
+```
+
+El backend utiliza el puerto **3000** por defecto. Durante pruebas locales se utilizó temporalmente el **3001** por un conflicto del equipo; ese cambio no forma parte de la configuración guardada en Git.
+
+## Frontend de resultados
+
+Desde la raíz del repositorio:
+
+```powershell
+cd frontend/resultados
+npm install
+npm run dev
+```
+
+- Portada: `http://localhost:5174/`
+- Resultados públicos: `http://localhost:5174/resultados`
+- Administración: `http://localhost:5174/admin`
+
+El proxy configurado en `frontend/resultados/vite.config.js` apunta al backend de resultados en el puerto **3000**. Si el backend usa otro puerto local, ambos valores deben coincidir durante el desarrollo.
+
+## Compilación de las interfaces
+
+```powershell
+cd frontend/inscripciones
+npm run build
+
+cd ../resultados
+npm run build
+```
+
+Las compilaciones se guardan en `frontend/inscripciones/dist/` y `frontend/resultados/dist/`. Ambas rutas están excluidas de Git mediante `.gitignore`. Los servidores actuales están preparados para servir esas compilaciones desde la estructura del repositorio; el despliegue requiere ajustar su contexto de construcción y variables de entorno.
+
+## Organización y colaboración con Git
+
+- `main`: rama principal de integración estable.
+- `develop`: rama de integración para nuevos trabajos.
+- `feature/*`, `fix/*`, `chore/*` y `docs/*`: ramas temporales por tarea.
+- Los cambios se integran mediante Pull Request, preferentemente hacia `develop`. Cuando el equipo aprueba una versión, `develop` se integra a `main`.
+
+Convenciones de commits:
 
 ```text
-
-.env
-
+feat: agrega funcionalidad
+fix: corrige comportamiento
+refactor: reorganiza componentes
+chore: organiza archivos y configuraciones
+docs: actualiza documentacion
 ```
 
+## Seguridad y datos de prueba
 
+- No subir `.env`, contraseñas, tokens ni datos personales reales.
+- Utilizar datos ficticios o autorizados para pruebas.
+- Usar credenciales de producción distintas de las locales.
+- Restringir permisos de lectura y escritura en PostgreSQL cuando se despliegue.
+- Verificar los procesos de despliegue existentes antes de cambiar rutas o configuraciones.
 
-Ejemplo:
+## Integración y pruebas locales realizadas
 
+En el entorno de desarrollo se comprobó:
 
+1. Inscripción de un alumno libre y persistencia en PostgreSQL.
+2. Verificación del pago desde el panel organizador.
+3. Consulta del participante desde la administración de resultados.
+4. Registro de puntaje y hora de entrega, comprobados en la base de datos.
+5. Publicación de resultados y consulta pública del orden de mérito.
+6. Visualización vacía del ranking de colegios cuando solo había un alumno libre de prueba.
 
-```env
+Quedan pendientes pruebas adicionales de inscripciones por delegación, importación por lotes, despliegue y operación en producción; no se consideran validadas solo por las comprobaciones anteriores.
 
-DATABASE\_URL\_LECTOR=postgresql://postgres:TU\_CLAVE@localhost:5432/tarpuy\_local
+## Equipo
 
-DATABASE\_URL\_ADMIN=postgresql://postgres:TU\_CLAVE@localhost:5432/tarpuy\_local
+- Dávila Arenas, Hugo Javier.
+- Incio Ccahuana, Anthony.
+- Peralta Barboza, Evelyn Angely.
+- Rimachi Taipe, Martín Alejandro.
+- Román Espinoza, Diógenes.
+- Torpoco Torres, Francisco.
 
-ADMIN\_PASSWORD=admin123
+**Institución:** SENATI. **Curso:** Fullstack Developer Software. **Año:** 2026.
 
-```
-
-
-
-Ejecutar:
-
-
-
-```bash
-
-node --env-file=.env server.js
-
-```
-
-
-
-El servidor utiliza por defecto:
-
-
-
-```text
-
-http://localhost:3000
-
-```
-
-
-
-Resultados públicos:
-
-
-
-```text
-
-http://localhost:3000/resultados
-
-```
-
-
-
-Panel administrativo:
-
-
-
-```text
-
-http://localhost:3000/admin
-
-```
-
-
-
-\---
-
-
-
-\# API REST
-
-
-
-La plataforma expone diferentes endpoints para la comunicación entre frontend y backend.
-
-
-
-\## Inscripciones
-
-
-
-Ejemplos:
-
-
-
-```text
-
-POST /api/fichas
-
-POST /api/libres
-
-
-
-POST /api/admin/login
-
-POST /api/admin/logout
-
-
-
-GET   /api/admin/data
-
-PATCH /api/admin/verify
-
-
-
-GET   /api/admin/export.xlsx
-
-```
-
-
-
-\## Resultados
-
-
-
-Ejemplos:
-
-
-
-```text
-
-GET /api/resultados
-
-GET /api/ranking-colegios
-
-
-
-GET  /api/admin/config
-
-POST /api/admin/config
-
-
-
-GET  /api/admin/buscar
-
-POST /api/admin/guardar
-
-
-
-GET  /api/admin/inscritos
-
-POST /api/admin/guardar-lote
-
-
-
-POST /api/admin/importar
-
-```
-
-
-
-\---
-
-
-
-\# Reglas principales de negocio
-
-
-
-\- La inscripción por delegación tiene un costo de \*\*S/ 13 por estudiante\*\*.
-
-\- La inscripción de alumno libre tiene un costo de \*\*S/ 15\*\*.
-
-\- Cada delegación puede registrar como máximo \*\*10 estudiantes por grado\*\*.
-
-\- Los niveles utilizados deben contar con un asesor.
-
-\- El DNI debe ser validado antes de registrar al participante.
-
-\- Un estudiante no puede estar registrado dos veces.
-
-\- Los resultados solo son visibles públicamente cuando el organizador autoriza su publicación.
-
-
-
-\---
-
-
-
-\# Seguridad
-
-
-
-El proyecto incorpora diferentes controles de seguridad:
-
-
-
-\- Variables de entorno para credenciales.
-
-\- Validación de información en servidor.
-
-\- Consultas SQL parametrizadas.
-
-\- Protección de rutas administrativas.
-
-\- Control de intentos de inicio de sesión.
-
-\- Cookies de sesión en el sistema de inscripciones.
-
-\- Cabeceras HTTP de seguridad.
-
-\- Control de duplicidad de participantes.
-
-\- Límites de solicitudes mediante `express-rate-limit`.
-
-
-
-Los archivos `.env` no deben ser enviados al repositorio.
-
-
-
-\---
-
-
-
-\# Flujo de trabajo con Git y GitHub
-
-
-
-El equipo utiliza el siguiente modelo de ramas:
-
-
-
-```text
-
-main
-
-│
-
-└── develop
-
-&#x20;   │
-
-&#x20;   ├── feature/documentacion
-
-&#x20;   ├── feature/inscripciones
-
-&#x20;   ├── feature/resultados
-
-&#x20;   └── feature/mejoras
-
-```
-
-
-
-\### `main`
-
-
-
-Contiene la versión estable del proyecto.
-
-
-
-\### `develop`
-
-
-
-Rama de integración donde se incorporan las funcionalidades desarrolladas por el equipo.
-
-
-
-\### `feature/\*`
-
-
-
-Ramas utilizadas para desarrollar funcionalidades específicas.
-
-
-
-Ejemplo:
-
-
-
-```bash
-
-git checkout develop
-
-
-
-git checkout -b feature/documentacion
-
-```
-
-
-
-Después de realizar los cambios:
-
-
-
-```bash
-
-git add .
-
-
-
-git commit -m "docs: mejora documentación principal del proyecto"
-
-
-
-git push origin feature/documentacion
-
-```
-
-
-
-Finalmente se crea un \*\*Pull Request\*\* hacia `develop`.
-
-
-
-\---
-
-
-
-\# Convención sugerida de commits
-
-
-
-Ejemplos:
-
-
-
-```text
-
-feat: agrega nueva funcionalidad
-
-
-
-fix: corrige error de validación
-
-
-
-docs: actualiza documentación
-
-
-
-refactor: reorganiza código
-
-
-
-test: agrega pruebas
-
-
-
-style: mejora interfaz visual
-
-```
-
-
-
-\---
-
-
-
-\# Desarrollo del proyecto
-
-
-
-El desarrollo se organizó en diferentes etapas:
-
-
-
-\### Etapa 1 — Análisis
-
-
-
-\- Identificación del problema.
-
-\- Definición de actores.
-
-\- Requerimientos funcionales.
-
-\- Requerimientos no funcionales.
-
-\- Reglas de negocio.
-
-
-
-\### Etapa 2 — Diseño
-
-
-
-\- Definición de arquitectura.
-
-\- Diseño de base de datos.
-
-\- Diseño de flujos.
-
-\- Diseño de interfaces.
-
-
-
-\### Etapa 3 — Sistema de Inscripciones
-
-
-
-\- Formularios.
-
-\- Validaciones.
-
-\- Persistencia de información.
-
-\- Panel administrativo.
-
-\- Verificación de pagos.
-
-\- Exportación Excel.
-
-
-
-\### Etapa 4 — Sistema de Resultados
-
-
-
-\- Registro de puntajes.
-
-\- Importación de información.
-
-\- Orden de mérito.
-
-\- Ranking.
-
-\- Publicación de resultados.
-
-
-
-\### Etapa 5 — Despliegue
-
-
-
-\- Dockerización.
-
-\- Configuración de variables de entorno.
-
-\- Despliegue mediante Fly.io.
-
-
-
-\### Etapa 6 — Trabajo colaborativo
-
-
-
-\- Git.
-
-\- GitHub.
-
-\- Ramas.
-
-\- Commits.
-
-\- Pull Requests.
-
-\- Documentación del proyecto.
-
-
-
-\---
-
-
-
-\# Pruebas
-
-
-
-Entre los casos considerados se encuentran:
-
-
-
-\- Inscripción válida por delegación.
-
-\- DNI inválido.
-
-\- DNI duplicado.
-
-\- Falta de asesor.
-
-\- Más de 10 estudiantes por grado.
-
-\- Pago incompleto.
-
-\- Alumno libre válido.
-
-\- Acceso administrativo no autorizado.
-
-\- Contraseña incorrecta.
-
-\- Número de operación duplicado.
-
-\- Exportación a Excel.
-
-\- Registro de puntajes.
-
-\- Publicación de resultados.
-
-
-
-\---
-
-
-
-\# Estado del proyecto
-
-
-
-Actualmente la plataforma cuenta con:
-
-
-
-\- ✅ Sistema de inscripciones.
-
-\- ✅ Inscripción por delegación.
-
-\- ✅ Alumno libre.
-
-\- ✅ Validaciones.
-
-\- ✅ Panel administrativo.
-
-\- ✅ Verificación de pagos.
-
-\- ✅ Exportación Excel.
-
-\- ✅ Sistema de resultados.
-
-\- ✅ Registro de puntajes.
-
-\- ✅ Ranking.
-
-\- ✅ Publicación controlada.
-
-\- ✅ PostgreSQL.
-
-\- ✅ API REST.
-
-\- ✅ Docker.
-
-\- ✅ Despliegue web.
-
-\- ✅ Control de versiones con Git y GitHub.
-
-\- 🔄 Mejora de documentación y flujo colaborativo.
-
-
-
-\---
-
-
-
-\# Integrantes
-
-
-
-\- Dávila Arenas, Hugo Javier
-
-\- Incio Ccahuana, Anthony
-
-\- Peralta Barboza, Evelyn Angely
-
-\- Rimachi Taipe, Martín Alejandro
-
-\- Román Espinoza, Diógenes
-
-\- Torpoco Torres, Francisco
-
-
-
-\---
-
-
-
-\# Curso
-
-
-
-\*\*Fullstack Developer Software\*\*
-
-
-
-Carrera:
-
-
-
-\*\*Ingeniería de Software con Inteligencia Artificial\*\*
-
-
-
-Institución:
-
-
-
-\*\*SENATI\*\*
-
-
-
-Año:
-
-
-
-\*\*2026\*\*
-
-
-
-\---
-
-
-
-\# Licencia y uso
-
-
-
-Proyecto desarrollado con fines académicos como parte del curso \*\*Fullstack Developer Software\*\* de SENATI.
-
-
-
-La información personal utilizada durante las pruebas debe ser ficticia o estar debidamente autorizada.
-
+Proyecto académico. Revisar derechos, licencias de terceros y condiciones de uso antes de cualquier distribución o despliegue público.
